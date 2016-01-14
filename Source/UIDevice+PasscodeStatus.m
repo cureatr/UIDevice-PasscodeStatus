@@ -21,7 +21,11 @@ NSString * const UIDevicePasscodeKeychainAccount = @"UIDevice-PasscodeStatus_Key
 #endif
     
 #ifdef __IPHONE_8_0
+#if (__IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0)
+    return YES;
+#else
     return (&kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly != NULL);
+#endif
 #else
     return NO;
 #endif
@@ -35,7 +39,11 @@ NSString * const UIDevicePasscodeKeychainAccount = @"UIDevice-PasscodeStatus_Key
 #endif
     
 #ifdef __IPHONE_8_0
+#if (__IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0)
+    if (YES) {
+#else
     if (&kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly != NULL) {
+#endif
         
         static NSData *password = nil;
         static dispatch_once_t onceToken;
