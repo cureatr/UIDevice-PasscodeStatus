@@ -64,13 +64,17 @@ NSString * const UIDevicePasscodeKeychainAccount = @"UIDevice-PasscodeStatus_Key
         
         // unable to create the access control item.
         if (sacObject == NULL || sacError != NULL) {
+            if (sacObject != NULL) {
+                CFRelease(sacObject);
+            }
             return LNPasscodeStatusUnknown;
         }
-        
         
         NSMutableDictionary *setQuery = [query mutableCopy];
         [setQuery setObject:password forKey:(__bridge id)kSecValueData];
         [setQuery setObject:(__bridge id)sacObject forKey:(__bridge id)kSecAttrAccessControl];
+        
+        CFRelease(sacObject);
         
         OSStatus status;
         status = SecItemAdd((__bridge CFDictionaryRef)setQuery, NULL);
